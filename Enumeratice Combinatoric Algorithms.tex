@@ -1,0 +1,777 @@
+%%!TEX TS-program = latex
+
+\documentclass[11pt]{article}
+\usepackage[a4paper]{geometry}
+%\usepackage[pdftex]{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{palatino}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{array}
+
+\usepackage{longtable}
+
+% Graphen etc.
+\usepackage{pst-node}
+\usepackage{pst-tree}
+\usepackage{pst-poly}
+
+\newcommand{\rcirclenode}[3]{
+	\circlenode{\# 1}{\parbox{\# 2}{\centering\# 3}}
+}
+
+\usepackage{hyperref}
+
+% Das Dokument beginnt hier
+\begin{document}
+
+\setlength{\parindent}{0pt}
+
+% Erstelle eine Hauptüberschrift
+
+\title{Enumerative Combinatoric Algorithms}
+\author{}
+\date {}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Enumerating vs. Counting}
+
+
+\subsection{Example 1: Spanning Paths}
+
+\paragraph{Given:} $ n $ points in convex position
+
+\paragraph{Question:} How many straight line planar (crossing-free) spanning paths (all points are used) are there? \newline
+
+\begin{itemize}
+
+\item $ n = 1 $
+
+$ \square $
+
+%%% n = 2
+\item $ n = 2 $ \newline
+
+\psmatrix[mnode=circle]
+$ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,1}{1,2}
+\endpsmatrix \newline
+
+\item $ n = 3 $: 4 paths
+
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+& $ \cdot $ \\
+$ \cdot $ & & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,2}{2,1}
+\ncline{1,2}{2,3}
+\endpsmatrix
+~~~~
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+& $ \cdot $ \\
+$ \cdot $ & & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,2}{2,3}
+\ncline{2,1}{2,3}
+\endpsmatrix
+~~~~
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+& $ \cdot $ \\
+$ \cdot $ & & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,2}{2,1}
+\ncline{2,1}{2,3}
+\endpsmatrix
+
+\item $ n = 4 $: 8 paths
+
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,1}{2,1}
+\ncline{1,1}{1,2}
+\ncline{2,1}{2,2}
+\endpsmatrix
+~~~~
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,1}{2,1}
+\ncline{2,1}{2,2}
+\ncline{1,2}{2,2}
+\endpsmatrix
+~~~~
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,1}{1,2}
+\ncline{1,2}{2,2}
+\ncline{2,1}{2,2}
+\endpsmatrix
+~~~~
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,1}{1,2}
+\ncline{1,1}{2,1}
+\ncline{2,1}{2,2}
+\endpsmatrix
+
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,1}{1,2}
+\ncline{1,1}{2,2}
+\ncline{2,1}{2,2}
+\endpsmatrix
+~~~~
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,1}{1,2}
+\ncline{1,2}{2,1}
+\ncline{2,1}{2,2}
+\endpsmatrix
+~~~~
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,1}{2,1}
+\ncline{1,1}{2,2}
+\ncline{1,2}{2,2}
+\endpsmatrix
+~~~~
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\small
+\ncline[linestyle=dotted,arrows=-,nodesep=15pt]{1,5}{1,7}
+\ncline{1,1}{2,1}
+\ncline{1,2}{2,1}
+\ncline{1,2}{2,2}
+\endpsmatrix
+
+%%% n = 5
+\item $ n = 5 $:
+	\begin{itemize}
+	\item more possibilites $ \rightarrow $ we go towards counting rather than enumerating
+	\item look at possible types of paths, in CW and CCW direction for each of the five starting points. Divide by 2 for identical paths obtained with different starting points (since paths have 2 ends)
+	\end{itemize}
+
+\end{itemize}
+
+\subsection{Example 2: Blokus}
+
+\paragraph{Definition}
+\begin{itemize}
+\item consists of unit squares connected via edges
+\item $ n $-polyomino has $ n $ unit squares
+\item Animal: does not contain holes
+\end{itemize}
+
+\paragraph{Question:} How many $ n $-polyominoes are there?
+
+%%% add defimition of free/fixed
+%% no of fixed/free polyominos
+
+Enumerate/Construct all polyominoes
+\begin{itemize}
+\item construct the $ (n + 1) $-ominoes from the $ n $-ominoes. This works because we can show that from each $ (n + 1) $-ominoes you can remove a square and get a valid $ n $-omino (idea: construct an arbitrary spanning tree, remove leaf)
+\item find and remove duplicates
+\item how many $ (n + 1) $-ominoes are generated?
+\end{itemize}
+
+	maximum number:
+	$ 2n + 2 $ or $ 4n - 2 \dot | E | $
+	
+	Why?
+	
+	$ \square $: 4 possibilities to add a square (at each edge)
+	
+	$\begin{array}{c c c c}
+	& & \square \\
+	\square & \square & \square & \square \\
+	& \square
+	\end{array} $
+	
+	$ 4n - 2 \dot | E | \rightarrow 4n - 2(n - 1) = 2(n + 2) $
+	
+	How to find duplicates? compare every pair $ \rightarrow O(k^2 n) $
+
+\subsubsection{Fingerprints}
+
+\begin{itemize}
+
+\item maps an object (here: polyomino) to a \textit{unique} representation, independent of translation, rotation, reflection
+
+\item sort the fingerprints (insertion sort)
+
+\item binary search
+
+\end{itemize}
+
+One possibility for polyominoes: use vector representations on a coordinate system \newline
+
+Examples:
+\begin{itemize}
+\item $
+\begin{array}{l c c c}
+3 & & & \square \\
+2 & & & \square \\
+1 & \square & \square & \square \\
+& 1 & 2 & 3 \\
+\end{array}
+$
+has vector representation $ <(1, 1), (2, 1), (3, 1), (3, 2), (3, 3)> $
+
+$
+\begin{array}{l c c c}
+3 & \square \\
+2 & \square \\
+1 & \square & \square & \square \\
+& 1 & 2 & 3 \\
+\end{array}
+$
+has vector representation
+$  <(1, 1), (2, 1), (3, 1), (1, 2), (1, 3)> $
+
+This is lexicographically smaller than the first one
+
+\item 
+$
+\begin{array}{l c c c}
+3 & \square \\
+2 & \square & \square \\
+1 & & \square & \square \\
+& 1 & 2 & 3 \\
+\end{array}
+~~~~
+\begin{array}{l c c c}
+3 & & \square & \square \\
+2 & \square & \square \\
+1 & \square \\
+& 1 & 2 & 3 \\
+\end{array}
+$
+$ <(1, 1), (1, 2), (2, 2), (2, 3), (3, 3)> $ \bigskip
+
+\item
+$
+\begin{array}{l c c c}
+3 \\
+2 & \square & \square & \square \\
+1 & \square & & \square \\
+& 1 & 2 & 3 \\
+\end{array}
+~~~~
+\begin{array}{l c c c}
+3 & \square & \square \\
+2 & \square \\
+1 & \square & \square \\
+& 1 & 2 & 3 \\
+\end{array}
+$
+$ <(1, 1), (3, 1), (1, 2), (1, 3), (2, 3)> $
+\end{itemize}
+
+Generally:
+\begin{enumerate}
+\item generate all 8 transformations (4 rotations, 2 reflections)
+\item take the lexicographically smallest one $ \rightarrow O(1) \cdot O(n) $ for an $ n $-omino
+\end{enumerate}
+
+$ f'(n) $ fingerprints generated in total $ \rightarrow f'(n)\left( O(n) + \log (f'(n) \cdot O(n) \right)$ \newline
+
+$ \lim \limits_{n \rightarrow \infty} \frac{f ( n + 1)}{f(n)} = \lambda $, $ 3.98 < \lambda < 4.65 $ \newline
+
+$ f(n) $ is known up to $ n = 56 $.
+
+
+
+%%%%%% 17. März
+
+\subsection{Example Spanning Trees on Ladders}
+
+with $ n $ rangs
+
+%%% figure
+
+\paragraph{Question:} Number of spanning trees on a ladder with $ n $ rangs
+
+\begin{itemize}
+
+\item $ n = 1 $
+
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\ncline{1,1}{1,2}
+\ncline{1,2}{1,3}
+\ncline{2,1}{2,2}
+\ncline{2,2}{2,3}
+\ncline{1,2}{2,2}
+\endpsmatrix \smallskip
+
+\# = 1
+
+\item $ n = 2 $
+
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ & $ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $ & $ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\ncline{1,1}{1,2}
+\ncline[linestyle=dotted]{1,2}{1,3}
+\ncline{1,3}{1,4}
+\ncline{2,1}{2,2}
+\ncline[linestyle=dotted]{2,2}{2,3}
+\ncline{2,3}{2,4}
+\ncline[linestyle=dotted]{1,2}{2,2}
+\ncline[linestyle=dotted]{1,3}{2,3}
+\endpsmatrix \smallskip
+
+\# = 4
+
+\item $ n = 3 $
+
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ & $ \cdot $ & $ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $ & $ \cdot $ & $ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\ncline{1,1}{1,2}
+\ncline{1,2}{1,3}
+\ncline{1,3}{1,4}
+\ncline{2,1}{2,2}
+\ncline{2,2}{2,3}
+\ncline{2,3}{2,4}
+\ncline{1,2}{2,2}
+\ncline{1,3}{2,3}
+\ncline{1,4}{2,4}
+\ncline{1,4}{1,5}
+\ncline{2,4}{2,5}
+\endpsmatrix
+\hspace{20pt} $ \Leftrightarrow $ \hspace{20pt}
+\psmatrix[mnode=circle,colsep=0.2,rowsep=0.2]
+$ \cdot $ & $ \cdot $ & $ \cdot $ & $ \cdot $ \\
+$ \cdot $ & $ \cdot $ & $ \cdot $ & $ \cdot $
+\psset{shortput=nab,arrows=-}
+\ncline{1,1}{1,2}
+\ncline{1,1}{2,1}
+\ncline{1,2}{1,3}
+\ncline{1,3}{1,4}
+\ncline{2,1}{2,2}
+\ncline{2,2}{2,3}
+\ncline{2,3}{2,4}
+\ncline{1,2}{2,2}
+\ncline{1,3}{2,3}
+\ncline{1,4}{2,4}
+\endpsmatrix \smallskip
+
+\# = 15
+
+\end{itemize}
+
+\paragraph{Answer:}
+Counting spanning trees on a ladder (with $ n $ rangs) $ \Leftrightarrow $ counting spanning trees on a $ 2n $ grid
+
+$ n \rightarrow n + 1 $
+
+%%% figure
+
+\begin{enumerate}
+
+\item
+	The 2 rightmost vertices for $ n $ share a connected component $ \rightarrow A(n) $
+	
+\item
+	The 2 rightmost vertices for $ n $ are in different connected components $ \rightarrow B(n) $
+
+\end{enumerate}
+
+Consider case 1
+%% figure
+
+$ A(n + 1) = 3 A(n) + 1 B(n) $
+
+Consider case 2
+
+%% figure
+
+% $ B(n + 1) = 2 A(n - 1) + B(n - 1) 
+
+%% .....
+
+\[ A(1) = \frac{1}{2 \sqrt{3}} \left( ( 2 + \sqrt{3} )^1 - ( 2 - \sqrt{3} )^1 \right) = \frac{2 \sqrt{3}}{2 \sqrt{3}} \]
+\[ A(2) = \dots = \frac{8 \sqrt{3}}{2 \sqrt{3}} = 4 \] \medskip
+
+\begin{eqnarray}
+A(n) = 4 A(n - 1) - A(n - 2) \\
+= \frac{4}{2 \sqrt{3}} \left( ( 2 + \sqrt{3} )^{n-1} - ( 2 - \sqrt{3} )^{n-1} \right) - \frac{1}{2 \sqrt{3}} \left( ( 2 + \sqrt{3} )^{n-2} - ( 2 - \sqrt{3} )^{n-2} \right)
+\end{eqnarray}
+
+%%%%....
+
+\section{Inclusion – Exclusion Principle}
+
+\subsection{Example: Multipliers}
+
+$ S = \{1, \dots, 100\} $
+
+\paragraph{Question:} How many numbers in $ S $ are multipliers of 6 or 7? \newline
+
+$ | S_6 | = \lfloor \frac{100}{6} \rfloor $ = 16, $ | S_6 | = 14 $ \newline
+
+$ | S_{6,7} | \neq | S_6 | + | S_6 | $: \newline %% figure
+
+\begin{pspicture}(6,2)
+\rput[c](0.6,1.5){\rnode{1}{$S_6$}}
+\rput[c](4.9,1.5){\rnode{2}{$S_7$}}
+\pscircle(2,1){1}
+\pscircle(3.5,1){1}\end{pspicture}
+
+
+$ | S_{6,7} | = | S_6 | + | S_6 | - | S_{6 \& 7} | $
+
+\subsection{Example: Relatively Prime Numbers}
+
+$ S = \{1, \dots, 180\} $
+
+\paragraph{Question:} How many numbers in $ S $ are relatively prime to 180?
+
+\paragraph{Idea:} Count all numbers \textit{not} relatively prime to 180 $ \rightarrow T $.
+
+$ | T | = ? $
+
+\begin{pspicture}(6,4)
+\rput[c](0.6,3.5){\rnode{1}{$T_2$}}
+\rput[c](4.9,3.5){\rnode{2}{$T_5$}}
+\rput[c](2.75,0){\rnode{2}{$T_3$}}
+\pscircle(2,2.5){1}
+\pscircle(3.5,2.5){1}
+\pscircle(2.75,1.5){1}\end{pspicture}
+
+$ | T_2 | = 90 $
+
+$ | T_2 | = 60 $
+
+$ | T_2 | = 36 $ \newline
+
+$ | T | = | T_2 | + | T_3 | + | T_5 | - (| T_2 \cap T_3 | + | T_2 \cap T_5 | + | T_3 \cap T_5 |) + | T_2 \cap T_3  \cap T_5 | $
+
+$ | T | = 90 + 60 + 36 - (30 + 18 + 12) + 6 = 132 $ \newline
+
+$ | S | - | T | = 48 $ \newline
+
+In general: \newline
+
+\[ \mathcal{A} = \{ A_i \}^n_{i=1}, I = \{1, \dots, n\} \]
+\[ |_{i \in I} A_i | = \sum \limits_{i=1}^n \left( ( -1)^{i - 1} \sum \limits_{J \subseteq I, |J| = i} | \bigcap \limits_{j \in J} A_j | \right) \]
+
+\paragraph{Proof:}
+
+$ x \in A _1 \cup \dots \cup A_n $, $ x $ is contained in $ m $ sets $ A_i $.
+\[ | A_1 \cup \dots \cup A_n | = \sum (.) - \sum (. \cap .) + \sum (. \cap . \cap .) - \sum (. \cap . \cap . \cap .) \dots \]
+
+\begin{enumerate}
+\item for (single) sets \textit{not} containing $ x \rightarrow + 0 $
+\item if in any $ A_i \cap \dots \cap A_j $ at least one of the sets does \textit{not} contain $ x \rightarrow \pm 0 $
+\item $ \rightarrow $ only consider intersections of sets where all sets contain $ x $
+
+	$ \begin{pmatrix}m \\ k \end{pmatrix} $ intersections of $ k $ sets, all sets containing $ x \rightarrow \pm 1 $
+	
+	\[ \Rightarrow + \begin{pmatrix}m \\ 1 \end{pmatrix} -  \begin{pmatrix}m \\ 2 \end{pmatrix} + \dots + (-1)^{m - 1}  \begin{pmatrix}m \\ m \end{pmatrix} = 1 \]
+	\[ \begin{pmatrix}m \\ 0 \end{pmatrix} + \begin{pmatrix}m \\ 1 \end{pmatrix} -  \begin{pmatrix}m \\ 2 \end{pmatrix} + \dots + (-1)^{m}  \begin{pmatrix}m \\ m \end{pmatrix} = 0 \]
+	
+	Pascal's triangle
+	
+	\psmatrix[colsep=0.4cm,rowsep=0.4cm]
+	& 1 & & 3 & & 3 & & 1 \\
+	1 & & 4 & & 6 & & 4 & & 1
+	\psset{arrows=->,nodesep=2pt}
+	\ncline{1,2}{2,1}
+	\ncline{1,2}{2,3}
+	\ncline{1,4}{2,3}
+	\ncline{1,4}{2,5}
+	\ncline{1,6}{2,5}
+	\ncline{1,6}{2,7}
+	\ncline{1,8}{2,7}
+	\ncline{1,8}{2,9}
+	\endpsmatrix
+\end{enumerate}
+
+\subsection{Example: Number of Words}
+
+\paragraph{Given:} Language $ L $ with alphabet $ \Sigma = \{ A, B, C \} $ and every word of $ L $ consists of 10 characters.
+
+\paragraph{Question:} How many words of $ L $ contain each character at least once?
+
+\[ | G | = | L | - | X | = 3^{10} - (3 \cdot 2^{10} - 3 + 0) = 55980 \]
+
+\[ | S_A | = | S_B | = | S_C | = 2^{10} \]
+\[ | S_A \cap S_B | = | S_A \cap S_C | = | S_B \cap S_C | = 1 \]
+\[ | S_A \cap S_B \cap S_C | = 0 \]
+\[ | X | = | S_A | + | S_B | + | S_C | - | S_A \cap S_B |  - | S_A \cap S_C | - | S_B \cap S_C | + | S_A \cap S_B \cap S_C | \]
+
+\section{The Pigeon Hole Principle}
+
+If $ n $ elements are distributed to $ k $ sets, then there exists at least one set containing at least $ \lceil \frac{n}{k} \rceil $ elements.
+
+\subsection{Example: People in Vienna}
+
+\paragraph{Claim:} In Vienna there exist at least two persons with the exact same number of hairs on their head.
+
+\begin{itemize}
+\item human: at most $ \approx 500,000 $ hairs
+\item Vienna: $ \geq 1.7 \cdot 10^6 $ citizens
+\end{itemize}
+
+\paragraph{Idea:} Take 500,000 people. If 2 of them have the same amount of hair, then we are done. If not, add one more person, whose amount of hair must then already be present.
+
+\subsection{Example: Division of odd numbers}
+
+\paragraph{Given:} $ 1, 3, 7, 15, 31, \dots; a_i := 2^i - 1, i \geq 1 $ and $ q > 0 $ arbitrary odd number.
+
+\paragraph{Claim:} At least one of the $ a_i $'s is (integer) divisible by $ q $.
+
+\paragraph{Proof:} Consider all $ a_i $, $ 1 \leq i \leq q $
+\begin{itemize}
+\item If one of these $ a_i $ is divisible by $ q $, then we are done
+\item otherwise: $ a_i = d_i \cdot q + r_i $, $ 0 < r_i < q $; $ q \geq n > m > 0 $
+
+	$ \Rightarrow (q - 1) $ remainders $ \overset{\Rightarrow}{\text{p.h.p.}} \exists r_m, r_n $ such that $ r_m = r_n $
+	
+	Then $ (a_n - a_m) = (d_n - d_m) q + \underbrace{(r_n - r_m)}_{0} $
+	
+	$ (2^n - 1) - (2^m - 1) = 2^n - 2^m = 2^m(\underbrace{2^{n - m} - 1}_{= a_{n - m}}) $.
+	
+	$ 2^m $ is even and thus not divisible by $ q $.
+\end{itemize}
+
+\paragraph{In general:} if $ A_1, \dots A_k $ are finite (pairwise disjoint) sets \textit{and} $ | A_1 \cup \dots \cup A_k | > kr $, then $ \exists i $ such that $ | A_i | > r $.
+
+\paragraph{Proof:} Assume for the sake of contradiction that all $ | A_i | \leq r $
+
+$ k \cdot r \geq \sum \limits_{i = 1}^k | A_i | \geq | A_1 \cup \dots \cup A_k | > k \cdot r $
+
+\subsection{Example: Lossless Data Compression}
+
+\dots cannot guarantee compression for all input data!
+
+\begin{itemize}
+\item file $ \rightarrow $ string of bits
+\item assume that each file is transformed into a \textit{distinct} file that is not larger
+\item let $ F $ be the file with the least number of bits ($M$) that compresses $\rightarrow N $ bits
+\item $ N < M : 2^N + 1 $ – cannot be all distinct
+\end{itemize}
+
+
+\section{Reverse Search}
+
+\begin{itemize}
+\item Avis, Fukuda 1992
+\item enumerating data/objects/elements with almost no structure
+\item algorithmic
+\item count all objects \textit{exactly} once, no overcounting
+\end{itemize}
+
+\subsection{Example: Triangulations}
+
+\paragraph{Given:} set $ S $ of labelled points in convex position
+
+\paragraph{Question:} \# of triangulations on $ S $.
+
+\begin{itemize}
+\item $ n = 4 $
+
+\psmatrix[emnode=circle,mnode=circle,colsep=0.5,rowsep=0.3,fillstyle=solid,fillcolor=black]
+ &  \\
+ &
+\psset{shortput=nab,arrows=-}
+\ncline{1,1}{1,2}
+\ncline{1,1}{2,1}
+\ncline{1,2}{2,2}
+\ncline{2,1}{2,2}
+\ncline{1,2}{2,1}
+\endpsmatrix \hspace{10pt}
+\psmatrix[emnode=circle,mnode=circle,colsep=0.5,rowsep=0.3,fillstyle=solid,fillcolor=black]
+ &  \\
+ &
+\psset{shortput=nab,arrows=-}
+\ncline{1,1}{1,2}
+\ncline{1,1}{2,1}
+\ncline{1,2}{2,2}
+\ncline{2,1}{2,2}
+\ncline{1,1}{2,2}
+\endpsmatrix \smallskip
+
+\item $ n = 5 $
+
+\begin{pspicture}(2,2)
+\rput[c](1,1){\PstPentagon[PolyName = A]}
+\psline(A1)(A3)
+\psline(A3)(A5)
+\end{pspicture}
+$ \rightarrow $
+\begin{pspicture}(2,2)
+\rput[c](1,1){\PstPentagon[PolyName = A]}
+\psline(A1)(A3)
+\psline(A4)(A1)
+\end{pspicture}
+$ \rightarrow $
+\begin{pspicture}(2,2)
+\rput[c](1,1){\PstPentagon[PolyName = A]}
+\psline(A2)(A4)
+\psline(A4)(A1)
+\end{pspicture}
+$ \rightarrow $
+\begin{pspicture}(2,2)
+\rput[c](1,1){\PstPentagon[PolyName = A]}
+\psline(A2)(A4)
+\psline(A2)(A5)
+\end{pspicture}
+$ \rightarrow $
+\begin{pspicture}(2,2)
+\rput[c](1,1){\PstPentagon[PolyName = A]}
+\psline(A2)(A5)
+\psline(A5)(A3)
+\end{pspicture}
+$ \curvearrowright $
+
+
+\end{itemize}
+
+Flip on triangulations:
+4 points, remove the diagonal and add the other diagonal
+
+\subsection{Basic Idea}
+
+\begin{itemize}
+\item abstract graph $ G(V, E) $
+\item vertices $ V $: elements to be enumerated, $ | V | $ is very large
+\item edges $ e \in E: e = v_1, v_2; v_1, v_2 \in V $
+\item $ \Rightarrow G $ is an undirected graph
+\item $ G $ must be connected
+\item task: enumerate all vertices of $ G $
+\item idea: breadth-first or depth-first search: $ O(|V| + |E|) $ which is ok, but too much space necessary
+\end{itemize}
+
+
+\subsection{Example: Poker Chips Stacking}
+
+\paragraph{Given:} four colours (red, green, blue, white) of poker chips
+
+\paragraph{Task:} build stacks of height $ \leq 30 $ such that at most 3 chips of equal colour appear directly after another
+
+\begin{itemize}
+\item $ v_\Phi $: empty stack
+\item neighbours:
+	\begin{itemize}
+	\item 'successors': add a chip on top of the stack
+	\item 'predecessors': remove the topmost chip from the stack
+	\end{itemize}
+\item depth-first search
+	
+	\pstree[arrows=-]{\Toval{\textit{stack}}}{
+		\pstree{\Toval{red}}{
+			\Toval{$ \checkmark $}
+			\Toval{$ \checkmark $}
+			\Toval{$ \checkmark $}
+			\Toval{$ \checkmark $}
+		}
+		\pstree{\Toval{green}}{
+			\Toval{$ \checkmark $}
+			\Toval{$ \checkmark $}
+			\Toval{$ \checkmark $}
+			\Toval{$ \checkmark $}
+		}
+		\Toval{blue}
+		\Toval{white}
+	}
+\item store current stack.
+
+	Nodes that have already been visited can be deduced from the stack composition.
+\end{itemize}
+
+\paragraph{Requirements:}
+
+\begin{itemize}
+\item unique root
+\item successors and predecessors in arbitrary but fixed order
+
+	neighbour relation $ \gamma(v, k) \in \Gamma(v) $ ($ k $th neighbour)
+\item a unique predecessor function $ f(v), f: v \rightarrow v $ in $ G(V, E) $
+	\begin{enumerate}
+	\item $ \exists v_0 \in V: f(v_0) = v_0 $: root
+	\item $ \forall v \in V \backslash \{v_0\}: f(v) \in \Gamma(v) $: exactly one root
+	\item $ \forall v \in V \backslash \{v_0\} \forall x \in \mathbb{N}: f^x(v) \neq v $: cycle-free ($ f^x = f(f \dots f(v) \dots) $) $ x $ times
+	
+		$ \rightarrow $ reaching the root in finite time $ f^{|V|}(v) = v_0 $
+	\end{enumerate}
+
+\end{itemize}
+
+\subsection{Example: Tic Tac Toe}
+
+\subsection{Example: Connect Four (4 Gewinnt)}
+
+\begin{tabular}{| c | c | c | c | c | c |}
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+\hline
+& & & & & \\
+\hline
+& & & X & & \\
+\hline
+& & & O & & \\
+\hline
+\end{tabular} \newline
+
+too complex for reverse search, NP-hard
+
+\subsection{Algorithm}
+
+\subsection{Example: Triangulations}
+
+\end{document}
