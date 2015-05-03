@@ -28,12 +28,10 @@
 
 \usepackage{hyperref}
 
-% Das Dokument beginnt hier
 \begin{document}
 
 \setlength{\parindent}{0pt}
 
-% Erstelle eine Hauptüberschrift
 
 \title{Enumerative Combinatoric Algorithms}
 \author{}
@@ -60,7 +58,6 @@
 
 $ \square $
 
-%%% n = 2
 \item $ n = 2 $ \newline
 
 \psmatrix[mnode=circle]
@@ -206,15 +203,50 @@ $ \cdot $ & $ \cdot $
 
 \paragraph{Definition}
 \begin{itemize}
-\item consists of unit squares connected via edges
+\item consists of unit squares connected via edges (not just connected through vertices)
 \item $ n $-polyomino has $ n $ unit squares
 \item Animal: does not contain holes
+\item free: rotation/mirroring is not taken into account
+\item fixed: rotated/mirrored polyominoes are regarded as being distinct
 \end{itemize}
 
 \paragraph{Question:} How many $ n $-polyominoes are there?
 
-%%% add defimition of free/fixed
-%% no of fixed/free polyominos
+\begin{itemize}
+\item $ n = 1 $:
+
+	$ \square $
+	
+	1
+\item $ n = 2 $:
+	\begin{itemize}
+	\item $ \square \square $
+	\item $ \begin{array}{c}\square \\ \square \end{array} $
+	\end{itemize}
+	
+	fixed: 2, free: 1
+\item $ n = 3 $:
+	\begin{itemize}
+	\item $ \begin{array}{c c c}\square & \square & \square \end{array} $
+	\item $ \begin{array}{c}\square \\ \square \\ \square \end{array} $
+	\item $ \begin{array}{c c}\square & \square \\ \square \end{array} ~~ \times 4 $
+	\end{itemize}
+	
+	fixed: 6, free: 2
+
+\item $ n = 4 $:
+	\begin{itemize}
+	\item $ \begin{array}{c c c c}\square & \square & \square & \square \end{array} ~~ \times 2 $
+	\item $ \begin{array}{c c}\square \\ \square \\ \square & \square \end{array} ~~ \times 8 $
+	\item $ \begin{array}{c c c}\square & \square & \square \\ & \square \end{array} ~~ \times 4 $ (reflection has same effect as rotation)
+	\item $ \begin{array}{c c} & \square \\ \square & \square \\ \square \end{array} ~~ \times 4 $
+	\item $ \begin{array}{c c}\square & \square \\ \square & \square \end{array} ~~ \times 1 $
+	\end{itemize}
+	
+	fixed: 19, free: 5
+
+\end{itemize}
+
 
 Enumerate/Construct all polyominoes
 \begin{itemize}
@@ -470,7 +502,8 @@ $ | S_{6,7} | \neq | S_6 | + | S_6 | $: \newline %% figure
 \rput[c](0.6,1.5){\rnode{1}{$S_6$}}
 \rput[c](4.9,1.5){\rnode{2}{$S_7$}}
 \pscircle(2,1){1}
-\pscircle(3.5,1){1}\end{pspicture}
+\pscircle(3.5,1){1}
+\end{pspicture}
 
 
 $ | S_{6,7} | = | S_6 | + | S_6 | - | S_{6 \& 7} | $
@@ -491,7 +524,8 @@ $ | T | = ? $
 \rput[c](2.75,0){\rnode{2}{$T_3$}}
 \pscircle(2,2.5){1}
 \pscircle(3.5,2.5){1}
-\pscircle(2.75,1.5){1}\end{pspicture}
+\pscircle(2.75,1.5){1}
+\end{pspicture}
 
 $ | T_2 | = 90 $
 
@@ -755,6 +789,19 @@ Flip on triangulations:
 
 \subsection{Example: Tic Tac Toe}
 
+\paragraph{Given:}
+
+\paragraph{Task:} Enumerate all valid game positions (not considering symmetries)
+
+\begin{itemize}
+\item $ V $: game positions
+\item labelled board cells
+\item neighbours $ \gamma (v, k) $: legally add $ k $-th mark or remove one
+\item predecessor function: empty board as root, otherwise remove highest legal mark
+\item when iterating over the possible positions, check each node's predecessor to see if it has been visited before
+\end{itemize}
+
+
 \subsection{Example: Connect Four (4 Gewinnt)}
 
 \begin{tabular}{| c | c | c | c | c | c |}
@@ -771,6 +818,12 @@ Flip on triangulations:
 too complex for reverse search, NP-hard
 
 \subsection{Algorithm}
+
+%%% part 1
+
+%%% part 2
+
+Complexity Analysis
 
 \subsection{Example: Triangulations}
 
