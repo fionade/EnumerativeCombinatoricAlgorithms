@@ -52,6 +52,20 @@
 
 \paragraph{Question:} How many straight line planar (crossing-free) spanning paths (all points are used) are there? \newline
 
+\begin{pspicture}(4,2)
+\providecommand{\PstPolygonNode}{%\psdots[dotsize=0.2](1;\INode)
+}
+\rput[c](2,1){\PstPolygon[PolyRotation = 90, PolyNbSides = 9,PolyName = A,linestyle=none]}
+\psline(A1)(A9)
+\psline(A9)(A8)
+\psline(A8)(A2)
+\psline(A2)(A7)
+\psline(A7)(A3)
+\psline(A3)(A4)
+\psline(A4)(A5)
+\psline(A6)(A5)
+\end{pspicture}
+
 \begin{itemize}
 
 \item $ n = 1 $
@@ -198,6 +212,43 @@ $ \cdot $ & $ \cdot $
 	\end{itemize}
 
 \end{itemize}
+
+\paragraph{Counting} \ \\
+
+\begin{pspicture}(4,2)
+\providecommand{\PstPolygonNode}{%
+\rput*{*0}(1;\INode){\small\the\multidocount}%\psdots[dotsize=0.2](1;\INode)
+}
+\rput[c](2,1){\PstPolygon[PolyRotation = 90, PolyNbSides = 9,PolyName = A,linestyle=none]}
+\end{pspicture}
+
+\begin{itemize}
+\item \# of paths starting at $ \circ = \# P_\circ $
+\item $ \# P_n = \frac{n \cdot \# p_\circ}{2} = n \cdot \frac{2^{n-1}}{2} = n \cdot 2^{n - 2} $
+\end{itemize}
+
+\begin{pspicture}(4,2)
+\providecommand{\PstPolygonNode}{%\psdots[dotsize=0.2](1;\INode)
+}
+\rput[c](2,1){\PstPolygon[PolyRotation = 90, PolyNbSides = 9,PolyName = A,linestyle=none]}
+\psline(A1)(A9)
+\psline(A9)(A8)
+\psline[linestyle=dotted](A1)(A2)
+\psline[linestyle=dotted](A2)(A9)
+\psline[linestyle=dotted](A3)(A9)
+\psline[linestyle=dotted](A2)(A8)
+\psline[linestyle=dotted](A2)(A3)
+\psline[linestyle=dotted](A3)(A8)
+\psline[linestyle=dotted](A3)(A4)
+\psline[linestyle=dotted](A4)(A8)
+\psline(A8)(A7)
+\end{pspicture}
+
+\begin{itemize}
+\item set of not yet used points must not be split
+\item continue: always two options, 1 for the last
+\end{itemize}
+
 
 \subsection{Example 2: Blokus}
 
