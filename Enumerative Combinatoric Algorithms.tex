@@ -16,6 +16,11 @@
 \usepackage{array}
 
 \usepackage{longtable}
+\usepackage{color}
+\usepackage{colortbl}
+\definecolor{darkred}{rgb}{0.8,0.0,0}
+\definecolor{darkblue}{rgb}{0.1,0.1,0.6}
+\definecolor{darkgreen}{rgb}{0.0,0.6,0}
 
 % Graphen etc.
 \usepackage{pst-node}
@@ -27,6 +32,8 @@
 }
 
 \usepackage{hyperref}
+
+\usepackage{listings}
 
 \begin{document}
 
@@ -53,7 +60,8 @@
 \paragraph{Question:} How many straight line planar (crossing-free) spanning paths (all points are used) are there? \newline
 
 \begin{pspicture}(4,2)
-\providecommand{\PstPolygonNode}{%\psdots[dotsize=0.2](1;\INode)
+\providecommand{\PstPolygonNode}{%
+\psdots[dotsize=0.2](1;\INode)
 }
 \rput[c](2,1){\PstPolygon[PolyRotation = 90, PolyNbSides = 9,PolyName = A,linestyle=none]}
 \psline(A1)(A9)
@@ -226,7 +234,8 @@ $ \cdot $ & $ \cdot $
 \end{itemize}
 
 \begin{pspicture}(4,2)
-\providecommand{\PstPolygonNode}{%\psdots[dotsize=0.2](1;\INode)
+\providecommand{\PstPolygonNode}{%
+\psdots[dotsize=0.2](1;\INode)
 }
 \rput[c](2,1){\PstPolygon[PolyRotation = 90, PolyNbSides = 9,PolyName = A,linestyle=none]}
 \psline(A1)(A9)
@@ -877,12 +886,317 @@ too complex for reverse search, NP-hard
 
 \subsection{Algorithm}
 
+%%% 28.4.
+
 %%% part 1
 
 %%% part 2
 
-Complexity Analysis
 
 \subsection{Example: Triangulations}
+
+%% see slides
+\subsubsection{}
+
+\subsubsection{}
+
+\subsection{Complexity Analysis}
+
+\paragraph{I. While loop (amortised analysis)}
+
+\begin{itemize}
+
+\item[(r1)]
+	\begin{itemize}
+	\item look at each neighbour of $ v \Leftrightarrow $ each edge incident to $ v $: $ 2 \cdot | E | $
+	\item $ t ( \gamma ) $: the time needed for $ \gamma(v, j) $
+	\end{itemize}
+	$ \Rightarrow ~\approx t(\gamma ) \cdot | E | $
+\item[(r2)]
+	\begin{itemize}
+	\item $ t(f) $: the time needed for $ f(w) $ (predecessor)
+	\end{itemize}
+	$ \Rightarrow ~\approx t(f ) \cdot | E | $
+
+\end{itemize}
+
+
+\paragraph{II. If Block}
+
+\begin{itemize}
+\item[(f1)]
+	once per vertex $ \Rightarrow ~t(f ) \cdot | V | $
+\item[(f2)]
+	as often as $ (f1) $
+\end{itemize}
+
+Let $ \delta_{\max} \geq \delta (v) ~\forall_{v \in V} $ be the max. vertex degree of $ G (V, E) $.
+
+Repeat-until has at most $ \delta_{\max} $ loops. \smallskip
+
+$ \Rightarrow ~ \approx t(\gamma) \cdot | V | \cdot \delta_{\max} $
+
+
+\section{Pólya-Redfield Enumeration Theorem}
+
+
+%%%% slides 7.5.
+
+\subsection{Definitions}
+
+Main question: how many different objects exist?
+
+\paragraph{Objects}
+\begin{itemize}
+\item set of objects $ X $
+\item e.g. Strings, coloured grids, Tic Tac Toe board,\dots
+\end{itemize}
+
+\paragraph{Operations}
+
+\begin{itemize}
+\item set of $ n $ operations $ R = \{ R_i, 0 \leq i \leq n - 1 \} $
+\item $ R $ forms a group (operation $ \circ $) \newline
+
+	Axioms ($\forall R_i, R_j, R_k $):
+	\begin{itemize}
+	\item Closure: $ \exists R_k : R_i \circ R_j = R_k $
+	\item Associativity: $ (R_i \circ R_j) \circ R_k = R_i \circ (R_j \circ R_k) $
+	\item Inverse element $ \exists R_k: R_i \circ R_k = R_k \circ R_i = R_0 $
+	\item Identity element $ R_0 $: $ R_i \circ R_0 = R_0 \circ R_i = R_i $
+	\end{itemize}
+	Commutativity is in general not given.
+\item e.g. rotations, reflections
+\end{itemize}
+
+\paragraph{Orbits}
+
+\begin{itemize}
+\item set of objects $ X $ which can be transformed into one another with an operation $ R_i $.
+\item length: number of items within
+\end{itemize}
+
+Main question reformulated: how many orbits exist?
+
+\paragraph{Stabilisers}
+\begin{itemize}
+\item $ R_i $ stabiliser for object $ x $ $ \Leftrightarrow $ $ R_i(x) = x $
+\item $ m_x $: number of stabilisers for $ x $
+\item $ r_i $: number of objects for which $ R_i $ is a stabiliser (invariance number)
+\item it holds that $ \sum \limits_{i = 0}^{n-1} r_i = \sum \limits_{x \in X} m_x $
+\end{itemize}
+
+\subsection{Counting Orbits}
+
+\begin{itemize}
+\item Idea: specific case where $ \sum_{x \in \text{orbit}} m_x = n $
+	\begin{itemize}
+	\item go through graph of possible objects – unify those, that are one operation apart
+	\item in this case $ \sum \limits_{x \in X} m_x = \sum \limits_{\text{all orbits}} \sum \limits_{x \in \text{orbit}} m_x $
+	\end{itemize}
+\item then number of orbits $ = \frac{\sum \limits_{x \in X} m_x}{n} $
+\item invariance numbers $ r_i $ usually easier to obtain than all $ m_x $
+\item therefore use number of orbits $ = \frac{\sum \limits_{i = 0}^{n - 1} r_i}{n} $
+\end{itemize}
+
+
+\subsection{Algorithm}
+
+\begin{enumerate}
+\item identify all operations $ R_0 $ to $ R_{n-1} $. Check for group properties.
+\item compute all invariance numbers $ r_i $, $ 0 \leq i \leq n - 1 $
+\item compute the number of orbits as $ \frac{\sum \limits_{i = 0}^{n - 1} r_i}{n} $
+\end{enumerate}
+
+
+\subsection{Example: Cyclic Shift}
+
+Strings of length 4 with characters $ \{ A, B, C \} $. Cyclic shift by $ i $ positions ($ 0 \leq i \leq 3 $). How many different strings exist? \newline
+
+\textbf{Invariance numbers}
+\begin{itemize}
+\item $ R_0: r_0 = 3^4 = 81 $
+\item $ R_1: r_1 = 3 $, since a shift by 1 position means that all characters need to be the same if the result must be the same.
+\item $ R_2: r_2 = 3^2 = 9 $
+\item $ R_3: r_3 = 3 $
+\end{itemize}
+
+\[ \#\text{orbits} = \frac{81 + 3 + 9 + 3}{4} = \frac{96}{4} = 24 \]
+
+\paragraph{Variation:} every character has to be used at least once \newline
+
+$ | X | = 3 \cdot \begin{pmatrix} 2 \\ 2 \end{pmatrix} \cdot 2 = 3 \cdot 6 \cdot 2 = 36 $
+
+\textbf{Invariance numbers}
+\begin{itemize}
+\item $ r_0 = 3^4 = 36 $
+\item $ r_1 = r_3 = 0 $
+\item $ r_2 = 0 $
+\end{itemize}
+
+\[ \#\text{orbits} = \frac{36 + 0 + 0 + 0}{4} = 9 \]
+
+\subsection{Example: Grid Colouring}
+
+\subsubsection{$ 2 \times 2 $ Grid, 2 Colours}
+
+\begin{tabular}{| c | c |}
+\hline
+& \\
+\hline
+& \\
+\hline
+\end{tabular} \newline
+
+$ | X | = 2^4 = 16 $
+
+Example for rotation ($90^\circ$) invariance:
+
+\begin{tabular}{| c | c |}
+\hline
+\cellcolor{darkblue} & \cellcolor{darkblue} \\
+\hline
+\cellcolor{darkgreen} & \cellcolor{darkblue} \\
+\hline
+\end{tabular}
+\hspace{1em}
+\begin{tabular}{| c | c |}
+\hline
+\cellcolor{darkgreen} & \cellcolor{darkblue} \\
+\hline
+\cellcolor{darkblue} & \cellcolor{darkblue} \\
+\hline
+\end{tabular}
+
+\begin{enumerate}
+\item Only rotation is allowed
+	
+\textbf{Invariance numbers}
+    \begin{itemize}
+    \item $ R_0: r_0 = 16 $ ($ 0^\circ $ rotation)
+    \item $ R_1: r_1 = 2 $ ($ 90^\circ $ rotation)
+    \item $ R_2: r_2 = 4 $ ($ 180^\circ $ rotation)
+    \item $ R_3: r_3 = 2 $ ($ 270^\circ $ rotation)
+    \end{itemize}
+
+\[ \#\text{orbits} = \frac{16 + 2 + 4 + 2}{4} = \frac{24}{4} = 6 \]
+\item Rotation and reflection are allowed
+
+
+\end{enumerate}
+
+
+\subsubsection{$ 3 \times 3 $ Grid}
+
+$ 3 \times 3 $ grid: how many different colourings exist, if we allow rotation/rotation and reflection?
+
+%%% later
+
+\subsection{Example: Cube Colouring}
+
+6 sides, $ k $ colours. How many different colourings exist if you can rotate the cube?
+
+\subsection{Example: Tic Tac Toe}
+
+How many different positions can we get after $ k $ half-moves, considering symmetries?
+
+
+%%%%%%%%%%%%%%%%
+
+
+
+%%%% 12.5.
+
+
+
+%%% 9.6.
+
+\section{Generating Sequences}
+
+Example: $ \{ 1, 2, 3 \}, \{ 1, 3, 2 \}, \{ 2, 1, 3 \}, \{ 2, 3, 1 \}, \{ 3, 1, 2 \}, \{ 3, 2, 1 \} \rightarrow 6 = 3! $ permutations
+
+\subsection{Transition}
+
+Exchange two elements
+
+$ \{ 1, 2, 3, 4 \} \longrightarrow \{ 4, 2, 3, 1 \} $
+
+\subsection{Cycle Notation}
+
+$ \{ 4, 2, 1, 3 \} \longrightarrow (1, 4, 3) (2) \overset{\text{can. rep.}}{\longrightarrow}(2), (1, 4, 3) $
+$ 1 \rightarrow 4 \rightarrow 3 \rightarrow 1 $
+
+\subsection{Derangements}
+
+Derangement: permutation where every object ends up in a new position. \newline
+
+Count using Inclusion-Exclusion Principle
+
+\[ |\text{derangements} | := !n = \lfloor \frac{n!}{e} + \frac{1}{2} \rfloor \]
+
+\subsection{Sorting}
+
+Not possible any faster than $ O(n \log n) $
+
+\subsection{$ n $-Queens Problem}
+
+
+
+\subsection{Generating all Permutations}
+
+
+\subsubsection{Steinhaus-Johnson-Trotter Algorithm}
+
+\subsubsection{Heap's Algorithm}
+
+\section{Gray Code – a `reflected binary code'}
+
+\begin{itemize}
+
+\item $ n = 1 $
+	\begin{lstlisting}
+0
+1
+	\end{lstlisting}
+
+\item $ n = 2 $
+	\begin{lstlisting}
+00
+01
+11
+10
+	\end{lstlisting}
+
+\item $ n = 3 $
+	\begin{lstlisting}
+000
+001
+011
+010
+110
+111
+101
+100
+	\end{lstlisting}
+
+\end{itemize}
+
+\subsection{Conversion}
+
+$ b_{n - 1} b_{n - 2} \dots b_{1} b_0 \Longleftrightarrow g_{n - 1} g_{n - 2} \dots g_{1} g_0 $
+
+$ b_{n - 1} = g_{n - 1} $ \newline
+
+for $ i \neq n - 1 $:
+\begin{itemize}
+\item $ b_i = b_{i + 1} ~ XOR ~g_{i} $
+\item $ g_i = b_{i + 1} ~ XOR ~ b_{i} $
+\end{itemize}
+
+Examples Conversion:
+\begin{itemize}
+\item $ 1010_b \rightarrow 1111_g $
+\item $ 0100_g \rightarrow 01110_b $
+\end{itemize}
 
 \end{document}
