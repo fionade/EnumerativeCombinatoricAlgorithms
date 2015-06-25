@@ -1146,6 +1146,8 @@ Count using Inclusion-Exclusion Principle
 
 \[ |\text{derangements} | :=~ !n = | \text{all perms.} | - | \# \text{perms. with } \geq 1 \text{ fixed number} | = \lfloor \frac{n!}{e} + \frac{1}{2} \rfloor \]
 
+%%%% 9.6.
+
 \subsubsection{Example: Strings of Numbers}
 
 \begin{enumerate}
@@ -1166,17 +1168,67 @@ Comparison-based sorting is not possible any faster than $ O(n \log n) $:
 
 \subsection{$ n $-Queens Problem}
 
+\paragraph{Given:} $ n \times n $ chess board, $ n $ queens
 
+\paragraph{Task:} Position queens such that none threatens any other.
+
+\begin{itemize}
+\item Option 1: backtracking
+\item Option 2: permutation generator $ \pi $
+	\begin{itemize}
+	\item $ \pi[i] $ specifies the column of the queen in the $ i $-th row.
+	\item from one permutation to next: exchange 2 queens, check 4 diagonals
+	\end{itemize}
+\end{itemize}
 
 \subsection{Generating all Permutations}
 
-
-\subsubsection{Steinhaus-Johnson-Trotter Algorithm}
+How to generate permutations for problems as the $ n $-queens problem?
 
 \subsubsection{Heap's Algorithm}
 
+$ c $ from 1 to $ n $, two different steps:
+
+\begin{itemize}
+\item recursive computation of permutations $ n - 1 $
+\item oracle call to exchange two elements with a given oracle function
+\end{itemize}
+
+In Heap's algorithm, the oracle function is defined as $ i = 1 $ for current $ n $ odd, $ i = c $ else. \newline
+
+Advantage: slightly more efficient than Steinhaus-Johnson-Trotter
+
+\subsubsection{Steinhaus-Johnson-Trotter Algorithm}
+
+Idea: from $ n - 1 $ to $ n $ by inserting the new element into all possible positions \newline
+
+Advantage: circular, only neighbouring elements are exchanged
+
+\subsubsection{Lexicographic Algorithms}
+
+None of the two algorithms produces permutations in lexicographic order.
+
+%% there could be more detail/clarification here
+
+(Reverse) lexicographic algorithms: loop
+\begin{enumerate}
+\item invert the order of $ \pi[1], \dots, \pi[i] $
+\item recursively generate permutations in reverse lexicographic order
+\end{enumerate}
+
+\subsubsection{Random permutations}
+
+as the name suggests :)
+
 \section{Gray Code – a `reflected binary code'}
 
+\begin{itemize}
+\item subsequent sequences only differ in one bit
+\item circular
+\item can also be used for puzzle solving, e.g. Towers of Hanoi
+\end{itemize}
+
+For $ n $ bits:
 \begin{itemize}
 
 \item $ n = 1 $
