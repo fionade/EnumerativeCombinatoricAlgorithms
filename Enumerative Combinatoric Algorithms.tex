@@ -1277,4 +1277,54 @@ Examples Conversion:
 \item $ 0100_g \rightarrow 01110_b $
 \end{itemize}
 
+\subsection{Example: Towers of Hanoi}
+
+\paragraph{Given:} three poles, $ n $ disks of different sizes. Stacked by size, largest at the bottom
+
+\paragraph{Task:} reverse the order of the disks. No disk must be placed on top of a smaller one.
+
+Use a Gray code with as many bits as rings. Move the disk $ i $ when bit $ i $ changes. Start CW or CCW depending on the pole you want the rings to be on in the end and whether $ n $ is even or odd.
+
+\subsection{Example: Chinese Rings}
+
+\subsection{Example: Subset Generation}
+
+
+\section{Combinatorial 2 Player Games}
+
+Components
+\begin{itemize}
+\item state storage
+\item move generator
+\item identification of lose/win/draw states
+\item possibly backwards move generator
+\end{itemize}
+
+
+\subsection{Game-Tree vs. State-Space Complexity}
+
+\paragraph{Game-Tree:} consider all possible boards.
+
+Complexity: number of nodes of the complete game's decision tree
+\paragraph{State-Space:} consider all different boards
+
+Complexity: number of states which can be reached from the start by valid moves
+
+\paragraph{Equivalence of Game States:} they allow the same moves, result in the same successor. Typically rotation, reflection, colour inversion possible.
+
+Storing one of these states is sufficient.
+
+\subsection{Levels of Game Solution}
+
+\begin{itemize}
+\item \textbf{ultra-weakly solved:} it is known who can win, but not how
+\item \textbf{weakly solved:} a winning strategy from the starting position is known
+\item \textbf{strongly solved:} a strategy from all positions is known
+\item \textbf{ultra-strongly solved:} for any position it is known what the final result will be and after how many half-moves this will happen
+\end{itemize}
+
+\subsection{Enumerate all States}
+
+
+
 \end{document}
